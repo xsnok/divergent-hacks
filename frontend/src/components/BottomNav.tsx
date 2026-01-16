@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Home, BarChart3, Leaf, User, Camera } from "lucide-react";
+import { Home, Map as MapIcon, Leaf, User, Camera } from "lucide-react";
 
 interface BottomNavProps {
   activeTab: string;
@@ -9,7 +9,7 @@ interface BottomNavProps {
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const leftNavItems = [
     { id: "home", icon: Home, label: "Home" },
-    { id: "insights", icon: BarChart3, label: "Insights" },
+    { id: "insights", icon: MapIcon, label: "Events" },
   ];
 
   const rightNavItems = [
@@ -18,7 +18,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border">
+    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50">
       <div className="max-w-md mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Left Nav Items */}
