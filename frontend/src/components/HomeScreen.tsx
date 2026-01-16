@@ -5,7 +5,6 @@ import { Settings, Loader2 } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { formatTonnes } from "@/lib/carbon";
 
 export function HomeScreen() {
   const { user } = useUser();
@@ -28,7 +27,7 @@ export function HomeScreen() {
           .eq("user_id", user.id);
 
         const totalOffset =
-          offsetData?.reduce((acc, curr) => acc + Number(curr.amount_tons), 0) ||
+          offsetData?.reduce((acc: number, curr: { amount_tons: number }) => acc + Number(curr.amount_tons), 0) ||
           0;
 
         // 2. Fetch monthly logging data for chart
@@ -48,7 +47,7 @@ export function HomeScreen() {
 
         last6Months.forEach((m) => monthlyMap.set(m, 0));
 
-        loggingData?.forEach((item) => {
+        loggingData?.forEach((item: { created_at: string }) => {
           const month = new Date(item.created_at).toLocaleString("default", {
             month: "short",
           });

@@ -10,7 +10,6 @@ import {
   Leaf,
   ShoppingBag,
   Zap,
-  Utensils,
   FileText,
   Droplet,
   Trash,

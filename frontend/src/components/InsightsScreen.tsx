@@ -9,13 +9,26 @@ import { Info, Lightbulb, Loader2 } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { calculateCarbonSaved, CARBON_IMPACT } from "@/lib/carbon";
+import { calculateCarbonSaved } from "@/lib/carbon";
+
+interface BreakdownItem {
+  category: string;
+  kg: string;
+  count: number;
+  color: string;
+  percentage: number;
+}
+
+interface SegmentItem extends BreakdownItem {
+  startPercentage: number;
+  endPercentage: number;
+}
 
 export function InsightsScreen() {
   const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
-    breakdown: [] as any[],
+    breakdown: [] as BreakdownItem[],
     totalKg: 0,
     topCategory: "",
   });
@@ -33,7 +46,7 @@ export function InsightsScreen() {
         if (!items) return;
 
         const counts: Record<string, number> = {};
-        items.forEach((item) => {
+        items.forEach((item: { category: string }) => {
           counts[item.category] = (counts[item.category] || 0) + 1;
         });
 
@@ -55,6 +68,7 @@ export function InsightsScreen() {
             kg: kg.toFixed(1),
             count,
             color: colors[index % colors.length],
+            percentage: 0, // Placeholder to be filled next
           };
         });
 
@@ -81,7 +95,7 @@ export function InsightsScreen() {
 
   // Calculate donut chart segments
   let cumulativePercentage = 0;
-  const segments = data.breakdown.map((item) => {
+  const segments: SegmentItem[] = data.breakdown.map((item) => {
     const startPercentage = cumulativePercentage;
     cumulativePercentage += item.percentage;
     return {
