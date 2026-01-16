@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useUser } from "@/contexts/UserContext";
-import { supabase } from "@/lib/supabase";
 import { Calendar, MapPin, Recycle, Trash2, Leaf, CheckCircle2, Loader2 } from "lucide-react";
 
 // Fix Leaflet default icon issue
@@ -82,7 +81,7 @@ const EVENTS: Event[] = [
 ];
 
 export function InsightsScreen() {
-  const { user, refreshUser } = useUser();
+  const { user } = useUser();
   const [claimedEvents, setClaimedEvents] = useState<string[]>([]);
   const [claiming, setClaiming] = useState<string | null>(null);
 
