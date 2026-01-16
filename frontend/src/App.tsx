@@ -3,6 +3,7 @@ import "./App.css";
 import { HomeScreen } from "./components/HomeScreen";
 import { InsightsScreen } from "./components/InsightsScreen";
 import { OffsetScreen } from "./components/OffsetScreen";
+import { CameraScreen } from "./components/CameraScreen";
 import { BottomNav } from "./components/BottomNav";
 
 function App() {
@@ -17,11 +18,7 @@ function App() {
       case "offset":
         return <OffsetScreen />;
       case "camera":
-        return (
-          <div className="min-h-screen bg-background pb-20 flex items-center justify-center">
-            <p className="text-muted-foreground">Camera screen coming soon...</p>
-          </div>
-        );
+        return <CameraScreen />;
       case "profile":
         return (
           <div className="min-h-screen bg-background pb-20 flex items-center justify-center">
