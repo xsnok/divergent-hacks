@@ -35,7 +35,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 5,
         trash: 0,
-        compost: 2,
+        compost: 0,
       },
       badge: "Germany Awards",
     },
@@ -62,7 +62,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 4,
         trash: 2,
-        compost: 2,
+        compost: 0,
       },
     },
   ];
@@ -77,7 +77,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 5,
         trash: 0,
-        compost: 2,
+        compost: 0,
       },
       category: "Food & Drink",
     },
@@ -90,7 +90,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 10,
         trash: 0,
-        compost: 5,
+        compost: 0,
       },
       category: "Outdoor & Apparel",
     },
@@ -103,7 +103,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 8,
         trash: 0,
-        compost: 4,
+        compost: 2,
       },
       category: "Groceries",
     },
@@ -116,7 +116,7 @@ export function OffsetScreen() {
       cost: {
         recycling: 6,
         trash: 2,
-        compost: 2,
+        compost: 0,
       },
       category: "Home Goods",
     },
