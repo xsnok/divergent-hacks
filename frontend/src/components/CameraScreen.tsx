@@ -15,10 +15,12 @@ import {
   Droplet,
   Trash,
   Package,
+  Trophy,
 } from "lucide-react";
 import { callGeminiWithImage } from "../ai";
 import { useUser } from "../contexts/UserContext";
 import { logItems } from "../lib/itemLogging";
+import { EcoCatchGame } from "./EcoCatchGame";
 
 interface WasteItem {
   name: string;
@@ -44,6 +46,8 @@ export function CameraScreen() {
   const [isLogging, setIsLogging] = useState(false);
   const [analysis, setAnalysis] = useState<WasteAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showGame, setShowGame] = useState(false);
+  const [lastEarnings, setLastEarnings] = useState<{recycling: number, trash: number, compost: number} | null>(null);
 
   // Start camera stream
   const startCamera = async () => {
@@ -183,11 +187,7 @@ Return ALL objects visible in the image as a list.`,
       // Refresh user data to show updated currency
       await refreshUser();
 
-      // Show success message
-      alert(`Items logged! Earned: ♻️ ${result.earned.recycling} 🗑️ ${result.earned.trash} 🌱 ${result.earned.compost}`);
-
-      // Reset to take another photo
-      reset();
+      setLastEarnings(result.earned);
     } catch (error) {
       setError('Failed to log items. Please try again.');
     } finally {
@@ -255,8 +255,59 @@ Return ALL objects visible in the image as a list.`,
       </div>
 
       <div className="px-4 space-y-4">
+        {/* Success / Earnings View */}
+        {lastEarnings && (
+          <Card className="bg-green-50 border-green-200 animate-in fade-in zoom-in duration-300">
+            <CardContent className="pt-6 text-center space-y-4">
+              <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Leaf className="h-6 w-6 text-green-600" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-green-900">Items Logged!</h2>
+                <p className="text-sm text-green-700">You've earned some eco-currency</p>
+              </div>
+              
+              <div className="flex justify-center gap-4 py-2">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-blue-600">{lastEarnings.recycling}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">Recycle</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-green-600">{lastEarnings.compost}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">Compost</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-red-600">{lastEarnings.trash}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">Trash</p>
+                </div>
+              </div>
+
+              <div className="pt-2 space-y-3">
+                <Button 
+                  onClick={() => setShowGame(true)}
+                  className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold h-12"
+                >
+                  <Trophy className="mr-2 h-5 w-5" />
+                  Play Bonus Game
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setLastEarnings(null);
+                    reset();
+                  }}
+                  className="w-full"
+                >
+                  Done
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Camera/Image View */}
-        <Card className="overflow-hidden">
+        {!lastEarnings && (
+          <Card className="overflow-hidden">
           <CardContent className="p-0">
             {!capturedImage && !stream && (
               <div className="aspect-[3/4] bg-muted flex flex-col items-center justify-center gap-4">
@@ -357,8 +408,9 @@ Return ALL objects visible in the image as a list.`,
             <canvas ref={canvasRef} className="hidden" />
           </CardContent>
         </Card>
+      )}
 
-        {/* Error Message */}
+      {/* Error Message */}
         {error && (
           <Card className="border-destructive">
             <CardContent className="pt-6">
@@ -446,6 +498,16 @@ Return ALL objects visible in the image as a list.`,
           </div>
         )}
       </div>
+
+      {showGame && (
+        <EcoCatchGame 
+          onClose={() => {
+            setShowGame(false);
+            setLastEarnings(null);
+            reset();
+          }} 
+        />
+      )}
     </div>
   );
 }

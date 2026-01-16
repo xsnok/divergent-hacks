@@ -2,10 +2,18 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { supabase } from '../lib/supabase';
 import type { User } from '../lib/supabase';
 
+export interface GameReward {
+  discount: number; // 0 to 1 (e.g., 0.1 for 10% off)
+  multiplier: number; // 1 or more (e.g., 1.2 for 20% more impact)
+  expiresAt: number;
+}
+
 interface UserContextType {
   user: User | null;
   loading: boolean;
   refreshUser: () => Promise<void>;
+  reward: GameReward | null;
+  setReward: (reward: GameReward | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -13,6 +21,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [reward, setReward] = useState<GameReward | null>(null);
 
   const createAnonymousUser = async () => {
     // Generate random username
@@ -83,7 +92,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser }}>
+    <UserContext.Provider value={{ user, loading, refreshUser, reward, setReward }}>
       {children}
     </UserContext.Provider>
   );
