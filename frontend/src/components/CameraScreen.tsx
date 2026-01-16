@@ -48,6 +48,13 @@ export function CameraScreen() {
   const [showGame, setShowGame] = useState(false);
   const [lastEarnings, setLastEarnings] = useState<{recycling: number, trash: number, compost: number} | null>(null);
 
+  // Initialize video stream when available
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
+
   // Start camera stream
   const startCamera = async () => {
     try {
@@ -57,9 +64,6 @@ export function CameraScreen() {
         audio: false,
       });
       setStream(mediaStream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
     } catch (err) {
       console.error("Error accessing camera:", err);
       setError("Could not access camera. Please check permissions.");
