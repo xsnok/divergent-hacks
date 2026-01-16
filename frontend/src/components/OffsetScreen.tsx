@@ -33,9 +33,9 @@ export function OffsetScreen() {
         "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&q=80",
       offset: 1.0,
       cost: {
-        recycling: 100,
+        recycling: 5,
         trash: 0,
-        compost: 50,
+        compost: 2,
       },
       badge: "Germany Awards",
     },
@@ -48,7 +48,7 @@ export function OffsetScreen() {
       offset: 0.8,
       cost: {
         recycling: 0,
-        trash: 5,
+        trash: 2,
         compost: 0,
       },
     },
@@ -60,9 +60,9 @@ export function OffsetScreen() {
         "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=600&q=80",
       offset: 1.2,
       cost: {
-        recycling: 80,
-        trash: 40,
-        compost: 40,
+        recycling: 4,
+        trash: 2,
+        compost: 2,
       },
     },
   ];
@@ -75,9 +75,9 @@ export function OffsetScreen() {
       image:
         "https://images.unsplash.com/photo-1544233726-9f1d2b27bd8b?w=600&q=80",
       cost: {
-        recycling: 100,
+        recycling: 5,
         trash: 0,
-        compost: 50,
+        compost: 2,
       },
       category: "Food & Drink",
     },
@@ -88,9 +88,9 @@ export function OffsetScreen() {
       image:
         "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80",
       cost: {
-        recycling: 250,
+        recycling: 10,
         trash: 0,
-        compost: 150,
+        compost: 5,
       },
       category: "Outdoor & Apparel",
     },
@@ -101,9 +101,9 @@ export function OffsetScreen() {
       image:
         "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80",
       cost: {
-        recycling: 200,
+        recycling: 8,
         trash: 0,
-        compost: 100,
+        compost: 4,
       },
       category: "Groceries",
     },
@@ -114,9 +114,9 @@ export function OffsetScreen() {
       image:
         "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80",
       cost: {
-        recycling: 180,
-        trash: 40,
-        compost: 40,
+        recycling: 6,
+        trash: 2,
+        compost: 2,
       },
       category: "Home Goods",
     },
