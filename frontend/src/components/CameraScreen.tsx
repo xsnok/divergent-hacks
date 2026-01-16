@@ -17,6 +17,8 @@ import {
   Package,
 } from "lucide-react";
 import { callGeminiWithImage } from "../ai";
+import { useUser } from "../contexts/UserContext";
+import { logItems } from "../lib/itemLogging";
 
 interface WasteItem {
   name: string;
@@ -35,9 +37,11 @@ export function CameraScreen() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { user, refreshUser } = useUser();
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
   const [analysis, setAnalysis] = useState<WasteAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -166,6 +170,29 @@ Return ALL objects visible in the image as a list.`,
     setAnalysis(null);
     setError(null);
     startCamera();
+  };
+
+  // Handle logging items
+  const handleLogItems = async () => {
+    if (!user || !analysis) return;
+
+    setIsLogging(true);
+    try {
+      const result = await logItems(user.id, analysis.items, capturedImage || undefined);
+
+      // Refresh user data to show updated currency
+      await refreshUser();
+
+      // Show success message
+      alert(`Items logged! Earned: ♻️ ${result.earned.recycling} 🗑️ ${result.earned.trash} 🌱 ${result.earned.compost}`);
+
+      // Reset to take another photo
+      reset();
+    } catch (error) {
+      setError('Failed to log items. Please try again.');
+    } finally {
+      setIsLogging(false);
+    }
   };
 
   // Cleanup on unmount
@@ -398,9 +425,22 @@ Return ALL objects visible in the image as a list.`,
                 <RotateCcw className="mr-2 h-4 w-4" />
                 Scan Another
               </Button>
-              <Button className="flex-1 bg-green-600 hover:bg-green-700">
-                <Leaf className="mr-2 h-4 w-4" />
-                Log Items
+              <Button
+                onClick={handleLogItems}
+                disabled={isLogging || !user}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
+                {isLogging ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Logging...
+                  </>
+                ) : (
+                  <>
+                    <Leaf className="mr-2 h-4 w-4" />
+                    Log Items
+                  </>
+                )}
               </Button>
             </div>
           </div>
